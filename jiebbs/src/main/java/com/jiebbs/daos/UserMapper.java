@@ -1,5 +1,7 @@
 package com.jiebbs.daos;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.pojos.User;
 
 public interface UserMapper {
@@ -39,4 +41,20 @@ public interface UserMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(User record);
+	
+	/**
+	 * 这个方法验证用户名是否存在
+	 * @param username
+	 * @return
+	 */
+	int checkUsername(String username);
+	
+	/**
+	 * 这个方法返回登录后的用户信息
+	 * 在使用mybatis时必须使用@Param标注传入参数，而且在mybatis中编写sql语句时必须对应@Param标注中的参数名
+	 * @param username
+	 * @param password
+	 * @return user对象，其中包含用户的信息，用于返回给前端使用
+	 */
+	User selectLogin(@Param("username")String username,@Param("password")String password);
 }
