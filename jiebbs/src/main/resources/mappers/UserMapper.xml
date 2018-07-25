@@ -198,6 +198,14 @@
   
   </select>
   
+  <select id="checkEmail" resultType="int" parameterType="java.lang.String">
+  	select count(1) 
+  	from user_table
+  	<!-- 添加#类似于preparedStatement类，有预编译的功能，#{传入参数名} -->
+  	where email=#{email}
+  
+  </select>
+  
   <select id="selectLogin" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select
   	<include refid="Base_Column_List"/>

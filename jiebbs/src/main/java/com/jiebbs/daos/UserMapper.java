@@ -50,6 +50,13 @@ public interface UserMapper {
 	int checkUsername(String username);
 	
 	/**
+	 * 这个方法验证用户邮箱是否存在
+	 * @param email
+	 * @return
+	 */
+	int checkEmail(String email);
+	
+	/**
 	 * 这个方法返回登录后的用户信息
 	 * 在使用mybatis时必须使用@Param标注传入参数，而且在mybatis中编写sql语句时必须对应@Param标注中的参数名
 	 * @param username

@@ -25,7 +25,7 @@ public class UserController {
 	
 	/**
 	 * 
-	 * @param username
+	 * @param username 
 	 * @param password
 	 * @param session
 	 * @return
@@ -52,9 +52,17 @@ public class UserController {
 		return ServerResponse.createBySuccess();
 	} 
 	
-	
+	@RequestMapping(value="register.do",method=RequestMethod.POST)
+	@ResponseBody
 	public ServerResponse<String> register(User user){
-		
-		return null;
+		return iUserService.register(user);
 	}
+	
+	
+	@RequestMapping(value="valid.do",method=RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse<String> checkValid(String str,String type){
+		return iUserService.checkValid(str, type);
+	}
+	                                           
 }
