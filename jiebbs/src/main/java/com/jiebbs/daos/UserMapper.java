@@ -64,4 +64,36 @@ public interface UserMapper {
 	 * @return user对象，其中包含用户的信息，用于返回给前端使用
 	 */
 	User selectLogin(@Param("username")String username,@Param("password")String password);
+	
+	/**
+	 * 根据输入的用户名返回，忘记密码的问题
+	 * @param username
+	 * @return
+	 */
+	String selectQuestionByUsername(String username);
+	
+	/**
+	 * 根据传入的用户名 和答案 以及问题 进行校验
+	 * @param username
+	 * @param question
+	 * @param anwser
+	 * @return
+	 */
+	int checkAnswer(@Param("username")String username,@Param("question")String question,@Param("anwser")String anwser);
+	
+	/**
+	 * 重置用户密码
+	 * @param username
+	 * @param newPassword
+	 * @return
+	 */
+	int resetPasswordByUsername(@Param("username")String username,@Param("newPassword")String newPassword);
+	
+	/**
+	 * 验证旧密码是否是该用户的
+	 * @param username
+	 * @param oldPassword
+	 * @return
+	 */
+	int checkPassword(@Param("userId")Integer userId,@Param("Password")String Password);
 }

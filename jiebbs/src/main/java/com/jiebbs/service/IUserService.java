@@ -1,5 +1,9 @@
 package com.jiebbs.service;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.common.ServerResponse;
 import com.jiebbs.pojos.User;
 
@@ -15,4 +19,12 @@ public interface IUserService {
 	ServerResponse<String> register(User user);
 	
 	ServerResponse<String> checkValid(String str,String type);
+	
+	ServerResponse<String> selectQuestion(String username);
+	
+	ServerResponse<String> checkAnswer(String username,String question,String anwser);
+	
+	ServerResponse<String> resetPassword(String username,String newPassword,String forgetToken);
+	
+	ServerResponse<String> resetPassword(String newPassword,String oldPassword,User user);
 }

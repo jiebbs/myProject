@@ -205,12 +205,46 @@
   	where email=#{email}
   
   </select>
-  
+  <!-- 校验账号密码 -->
   <select id="selectLogin" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select
   	<include refid="Base_Column_List"/>
   	from user_table
   	where username=#{username} 
+  	and password=#{password}
+  </select>
+  
+  <!-- 查询忘记问题的密码 -->
+  <select id ="selectQuestionByUsername" resultType="java.lang.String" parameterType="java.lang.String">
+  	select 
+  	question
+  	from user_table
+  	where username = #{username}
+  </select>
+  
+  <!-- 校验用户提交的问题是否正确 -->
+  <select id="checkAnswer" resultType="int" parameterMap="map">
+  	select 
+  	count(1)
+  	from user_table
+  	where username=#{username}
+  	and question=#{question}
+  	and anwser=#{anwser}
+  </select>
+  
+  <!-- 更新用户密码 -->
+  <update id="resetPasswordByUsername" parameterMap="map">
+  	update user_table
+  	set password=#{newPassword},update_time=now()
+  	where username=#{username}
+  </update>
+  
+  <!-- 验证该密码是否是该用户的密码 -->
+  <select id="checkPassword" resultType="int" parameterType="map">
+  	select 
+  	count(1)
+  	from user_table
+  	where id=#{userID}
   	and password=#{password}
   </select>
 </mapper>
