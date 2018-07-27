@@ -223,17 +223,17 @@
   </select>
   
   <!-- 校验用户提交的问题是否正确 -->
-  <select id="checkAnswer" resultType="int" parameterMap="map">
+  <select id="checkAnswer" resultType="int" parameterType="map">
   	select 
   	count(1)
   	from user_table
   	where username=#{username}
   	and question=#{question}
-  	and anwser=#{anwser}
+  	and answer=#{answer}
   </select>
   
   <!-- 更新用户密码 -->
-  <update id="resetPasswordByUsername" parameterMap="map">
+  <update id="resetPasswordByUsername" parameterType="map">
   	update user_table
   	set password=#{newPassword},update_time=now()
   	where username=#{username}
@@ -246,5 +246,14 @@
   	from user_table
   	where id=#{userID}
   	and password=#{password}
+  </select>
+  
+  <!-- 通过用户ID查找用户的email -->
+  <select id="checkEmailByUserId" resultType="int" parameterType="map">
+  	select
+  	count(1)
+  	from user_table
+  	where email=#{email}
+  	and userId !=#{userId}
   </select>
 </mapper>

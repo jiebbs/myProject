@@ -79,7 +79,7 @@ public interface UserMapper {
 	 * @param anwser
 	 * @return
 	 */
-	int checkAnswer(@Param("username")String username,@Param("question")String question,@Param("anwser")String anwser);
+	int checkAnswer(@Param("username")String username,@Param("question")String question,@Param("answer")String answer);
 	
 	/**
 	 * 重置用户密码
@@ -96,4 +96,12 @@ public interface UserMapper {
 	 * @return
 	 */
 	int checkPassword(@Param("userId")Integer userId,@Param("Password")String Password);
+	
+	/**
+	 * 通过userId查找相应的email
+	 * @param userId
+	 * @param email
+	 * @return
+	 */
+	int checkEmailByUserId(@Param("userId")Integer userId,@Param("email")String email); 
 }

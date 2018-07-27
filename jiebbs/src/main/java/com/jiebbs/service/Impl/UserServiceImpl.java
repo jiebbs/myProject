@@ -43,7 +43,7 @@ public class UserServiceImpl implements IUserService{
 	
 	//注册方法 	
 	public ServerResponse<String> register(User user) {
-		ServerResponse validResponse = this.checkValid(user.getUsername(),Const.CURRENT_USER);
+		ServerResponse validResponse = this.checkValid(user.getUsername(),Const.USERNAME);
 		if(!validResponse.isSuccess()) {
 			return ServerResponse.createByErrorMessage("用户名已存在");
 		}
@@ -102,8 +102,8 @@ public class UserServiceImpl implements IUserService{
 	}
 	
 	//验证忘记密码的问题的答案
-	public ServerResponse<String> checkAnswer(String username,String question,String anwser){
-		int resultCount = userMapper.checkAnswer(username, question, anwser);
+	public ServerResponse<String> checkAnswer(String username,String question,String answer){
+		int resultCount = userMapper.checkAnswer(username, question, answer);
 		if(resultCount > 0) {
 			String forgetToken = UUID.randomUUID().toString();
 			TokenCache.setKey(TokenCache.TOKEN_PREFIX+username, forgetToken);
@@ -115,7 +115,7 @@ public class UserServiceImpl implements IUserService{
 	//重置账号的密码
 	public ServerResponse<String> resetPassword(String username,String newPassword,String forgetToken){
 		//校验Token是否为空
-		if(org.apache.commons.lang3.StringUtils.isNotBlank(forgetToken)) {
+		if(!org.apache.commons.lang3.StringUtils.isNotBlank(forgetToken)) {
 			return ServerResponse.createByErrorMessage("参数错误，Token必须传入");
 		}
 		//验证用户名是否存在
@@ -126,7 +126,7 @@ public class UserServiceImpl implements IUserService{
 		
 		String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
 		//从本地缓存中取得的token可能为null，所以要进行验证
-		if(org.apache.commons.lang3.StringUtils.isNotBlank(token)) {
+		if(!org.apache.commons.lang3.StringUtils.isNotBlank(token)) {
 			return ServerResponse.createByErrorMessage("token无效或者过期");
 		}
 		if(org.apache.commons.lang3.StringUtils.equals(forgetToken, token)) {
@@ -159,8 +159,32 @@ public class UserServiceImpl implements IUserService{
 	//更新用户信息
 	public ServerResponse<User> update_Information(User user){
 		//更新的时候Username是不能被更新的
-		//同事Email也要进行校验
+		//同事Email也要进行校验，校验新的Email是不是已经存在，并且存在的email如果相同的话不能是我们当前用户的
+		int resultCount = userMapper.checkEmailByUserId(user.getId(), user.getEmail());
+		if(resultCount>0 ) {
+			return ServerResponse.createByErrorMessage("此邮箱已被占用，请重新输入");
+		}
+		User updateUser = new User();
+		updateUser.setId(user.getId());
+		updateUser.setEmail(user.getEmail());
+		updateUser.setAnswer(user.getAnswer());
+		updateUser.setPhone(user.getPhone());
+		updateUser.setQuestion(user.getQuestion());
 		
-		return null;
+		int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
+		if(updateCount > 0) {
+			return ServerResponse.createBySuccess("用户信息更新成功",updateUser);
+		}
+		return ServerResponse.createByErrorMessage("用户信息更新失败");
+	}
+	
+	public ServerResponse<User> getDetailInformation(Integer userId){
+		User user = userMapper.selectByPrimaryKey(userId);
+		if(null==user) {
+			return ServerResponse.createByErrorMessage("找不到当前用户");
+		}
+		//置空密码
+		user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
+		return ServerResponse.createBySuccess(user);
 	}
 }

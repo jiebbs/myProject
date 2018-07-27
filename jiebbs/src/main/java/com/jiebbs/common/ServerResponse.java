@@ -2,17 +2,21 @@ package com.jiebbs.common;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+
+
 
 /**
  * 通用的对象
  * @author weijie_zhu
  *
  */
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 //保证对象序列化Json对象的时候，如果是null的对象，key也会消失
+@JsonInclude(Include.NON_NULL)
 public class ServerResponse<T> implements Serializable{
 	
 	private int status;
@@ -65,8 +69,8 @@ public class ServerResponse<T> implements Serializable{
 		this(status);
 		this.msg=msg;
 	}
-	@JsonIgnore
 	//使这个不会出现在Json序列化的节点中
+	@JsonIgnore
 	public boolean isSuccess(){
 		return this.status==ResponseCode.SUCCESS.getCode();
 	}
