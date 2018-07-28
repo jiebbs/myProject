@@ -31,6 +31,7 @@ public class UserController {
 	 * @param session
 	 * @return
 	 */
+	//test(ok)
 	@RequestMapping(value="login.do",method=RequestMethod.POST)
 	@ResponseBody//该标签将方法返回值自动序列化为Json
 	public ServerResponse<User> login(String username,String password,HttpSession session) {
@@ -46,26 +47,27 @@ public class UserController {
 	 * @param session
 	 * @return
 	 */
+	//test(ok)
 	@RequestMapping(value="logout.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> logout(HttpSession session){
 		session.removeAttribute(Const.CURRENT_USER);
 		return ServerResponse.createBySuccess();
 	} 
-	
+	//test(ok)
 	@RequestMapping(value="register.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> register(User user){
 		return iUserService.register(user);
 	}
 	
-	
+	//test(ok)
 	@RequestMapping(value="valid.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> checkValid(String str,String type){
 		return iUserService.checkValid(str, type);
 	}
-	 
+	//test(ok)
 	@RequestMapping(value="get_user_info.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<User> getUserInfo(HttpSession session){
@@ -76,22 +78,25 @@ public class UserController {
 			return ServerResponse.createBySuccess(user);
 		}
 	}
-	
+	//test(ok)
 	@RequestMapping(value="get_forget_question.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> getForgetQuestion(String username){
 		return iUserService.selectQuestion(username);
 	}
+	//test(ok)
 	@RequestMapping(value="forget_check_anwser.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> forgetCheckAnswer(String username,String question,String answer){
 		return iUserService.checkAnswer(username, question, answer);
 	}
+	//test(ok)
 	@RequestMapping(value="forget_reset_Password.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> forgetResetPassword(String username,String newPassword,String forgetToken){
 		return iUserService.resetPassword(username, newPassword, forgetToken);
 	}
+	//test(ok)
 	@RequestMapping(value="reset_Password.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> resetPassword(HttpSession session,String oldPassword,String newPassword){
@@ -101,7 +106,8 @@ public class UserController {
 		}
 		return iUserService.resetPassword(newPassword, oldPassword, user);
 	}
-	
+	//test(Ok)
+	//但是不能阻止客户更新自己的信息时输入相同的邮箱
 	@RequestMapping(value="update_Information.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<User> update_Information(HttpSession session,User user){
@@ -117,7 +123,7 @@ public class UserController {
 		}
 		return response;
 	}
-	
+	//test(Ok)
 	@RequestMapping(value="get_detail_Information.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<User> get_detail_Information(HttpSession session){

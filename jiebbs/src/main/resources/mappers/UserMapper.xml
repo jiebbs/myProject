@@ -244,7 +244,7 @@
   	select 
   	count(1)
   	from user_table
-  	where id=#{userID}
+  	where id=#{userId}
   	and password=#{password}
   </select>
   
@@ -254,6 +254,6 @@
   	count(1)
   	from user_table
   	where email=#{email}
-  	and userId !=#{userId}
+  	and id != #{userId}
   </select>
 </mapper>

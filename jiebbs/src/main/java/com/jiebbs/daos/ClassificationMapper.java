@@ -1,5 +1,7 @@
 package com.jiebbs.daos;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.pojos.Classification;
 
 public interface ClassificationMapper {
@@ -39,4 +41,12 @@ public interface ClassificationMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(Classification record);
+	
+	/**
+	 * 根据分类名和类级创建分类
+	 * @param catagoryName
+	 * @param parentId
+	 * @return
+	 */
+	int createCatagory(@Param("catagoryName")String catagoryName,@Param("parentId")Integer parentId);
 }

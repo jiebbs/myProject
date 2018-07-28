@@ -133,12 +133,12 @@ public class UserServiceImpl implements IUserService{
 			String md5newPassword = MD5Util.MD5EncodeUtf8(newPassword);
 			int rowCount = userMapper.resetPasswordByUsername(username, md5newPassword);
 			if(rowCount<=0) {
-				return ServerResponse.createBySuccessMessage("密码更新成功");
+				return ServerResponse.createBySuccessMessage("密码更新失败");
 			}
 		}else {
 			return ServerResponse.createByErrorMessage("Token错误，请重新获取重置密码的T");
 		}
-		return ServerResponse.createByErrorMessage("更新密码失败");
+		return ServerResponse.createByErrorMessage("更新密码成功");
 	}
 	
 	//登陆状态下更新密码
@@ -173,6 +173,8 @@ public class UserServiceImpl implements IUserService{
 		
 		int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
 		if(updateCount > 0) {
+			//updateUser = userMapper.selectByPrimaryKey(updateUser.getId());
+			//updateUser.setPassword(org.apache.commons.lang.StringUtils.EMPTY);
 			return ServerResponse.createBySuccess("用户信息更新成功",updateUser);
 		}
 		return ServerResponse.createByErrorMessage("用户信息更新失败");
@@ -186,5 +188,12 @@ public class UserServiceImpl implements IUserService{
 		//置空密码
 		user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
 		return ServerResponse.createBySuccess(user);
+	}
+	
+	public ServerResponse<String> checkAdminRole(User user){
+		if(user!=null&&user.getRole().intValue()==Const.Role.ROLE_ADMIN) {
+			return ServerResponse.createBySuccess();
+		}
+		return ServerResponse.createByError();
 	}
 }

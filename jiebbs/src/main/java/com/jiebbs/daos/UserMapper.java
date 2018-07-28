@@ -95,7 +95,7 @@ public interface UserMapper {
 	 * @param oldPassword
 	 * @return
 	 */
-	int checkPassword(@Param("userId")Integer userId,@Param("Password")String Password);
+	int checkPassword(@Param("userId")Integer userId,@Param("password")String Password);
 	
 	/**
 	 * 通过userId查找相应的email
