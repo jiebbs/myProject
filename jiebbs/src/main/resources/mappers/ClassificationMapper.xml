@@ -133,9 +133,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
+      <!-- <if test="updateTime != null"> -->
         update_time = now(),
-      </if>
+    <!--   </if> -->
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -154,4 +154,11 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getCategoryChildrenByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from Classification_table
+  	where parent_id=#{parentId}
+  </select>
 </mapper>

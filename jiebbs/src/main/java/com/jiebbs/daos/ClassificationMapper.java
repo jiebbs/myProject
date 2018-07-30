@@ -1,6 +1,6 @@
 package com.jiebbs.daos;
 
-import org.apache.ibatis.annotations.Param;
+import java.util.List;
 
 import com.jiebbs.pojos.Classification;
 
@@ -43,10 +43,12 @@ public interface ClassificationMapper {
 	int updateByPrimaryKey(Classification record);
 	
 	/**
-	 * 根据分类名和类级创建分类
-	 * @param catagoryName
-	 * @param parentId
+	 * 传入parentId查找其子节点的品类信息
+	 * @param id
 	 * @return
 	 */
-	int createCatagory(@Param("catagoryName")String catagoryName,@Param("parentId")Integer parentId);
+	List<Classification> getCategoryChildrenByParentId(Integer parentId);
+	
+	
+	
 }
