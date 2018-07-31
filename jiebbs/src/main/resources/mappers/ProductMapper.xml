@@ -188,9 +188,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null">
+     <!--  <if test="updateTime != null"> -->
         update_time = now(),
-      </if>
+      <!-- </if> -->
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -214,4 +214,5 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
 </mapper>

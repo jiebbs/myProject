@@ -1,5 +1,7 @@
 package com.jiebbs.daos;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.pojos.Product;
 
 public interface ProductMapper {
@@ -39,4 +41,5 @@ public interface ProductMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(Product record);
+	
 }

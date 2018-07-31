@@ -49,7 +49,7 @@ public class CategoryManagerController {
 	public ServerResponse<String> setCategoryName(HttpSession session,String newCategoryName,Integer CategoryId){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if(user==null) {
-			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(),"用户为登陆，请强制用户登陆");
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(),"用户未登陆，请强制用户登陆");
 		}
 		ServerResponse<String> response = iUserService.checkAdminRole(user);
 		if(response.isSuccess()) {
@@ -62,7 +62,7 @@ public class CategoryManagerController {
 	public ServerResponse<List<Classification>> getChildrenParallelCategory(HttpSession session,@RequestParam(value="categoryId",defaultValue="0")Integer categoryId){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if(user==null) {
-			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(),"用户为登陆，请强制用户登陆");
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(),"用户未登陆，请强制用户登陆");
 		}
 		ServerResponse<String> response = iUserService.checkAdminRole(user);
 		if(response.isSuccess()) {
@@ -76,7 +76,7 @@ public class CategoryManagerController {
 	public ServerResponse<List<Integer>> getCategoryAndDeepChildrenCategory(HttpSession session,@RequestParam(value="categoryId",defaultValue="0")Integer categoryId){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if(user==null) {
-			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(),"用户为登陆，请强制用户登陆");
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(),"用户未登陆，请强制用户登陆");
 		}
 		ServerResponse<String> response = iUserService.checkAdminRole(user);
 		if(response.isSuccess()) {
