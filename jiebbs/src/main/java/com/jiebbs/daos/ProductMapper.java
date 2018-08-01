@@ -1,5 +1,7 @@
 package com.jiebbs.daos;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.jiebbs.pojos.Product;
@@ -41,5 +43,19 @@ public interface ProductMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(Product record);
+	
+	/**
+	 * 列出产品
+	 * @return
+	 */
+	List<Product> listProduct();
+	
+	/**
+	 * 通过商品Id和名称查找商品
+	 * @param productName
+	 * @param productId
+	 * @return
+	 */
+	List<Product> selectByProductIdAndProductName(@Param(value="productName")String productName,@Param("productId")Integer productId);
 	
 }

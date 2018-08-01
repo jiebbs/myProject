@@ -1,9 +1,16 @@
 package com.jiebbs.service.Impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.jiebbs.common.ResponseCode;
 import com.jiebbs.common.ServerResponse;
 import com.jiebbs.daos.ClassificationMapper;
@@ -14,6 +21,7 @@ import com.jiebbs.service.IProductService;
 import com.jiebbs.utils.DateTimeUtils;
 import com.jiebbs.utils.PropertiesUtil;
 import com.jiebbs.vo.ProductDetailVO;
+import com.jiebbs.vo.ProductListVO;
 
 @Service("iProductService")
 public class ProductServiceImpl implements IProductService {
@@ -104,4 +112,53 @@ public class ProductServiceImpl implements IProductService {
 		productDetailVO.setCreateTime(DateTimeUtils.date2Str(product.getUpdateTime()));
 		return productDetailVO;
 	}
+	
+	
+	public ServerResponse<PageInfo> getProductList(Integer pageNum,Integer pageSize) {
+		//pageHelper使用
+		/*1、startPage ---> start
+		 *2、填充自己的sql查询逻辑
+		 *3、pageHelper收尾
+		 * */
+		
+		PageHelper.startPage(pageNum,pageSize); 
+		List<Product> productList = productMapper.listProduct();
+		List<ProductListVO> productListVOs = Lists.newArrayList();
+		for(Product temp:productList) {
+			productListVOs.add(assembleProductListVO(temp));
+		}
+		PageInfo pageResult = new PageInfo(productList);
+		pageResult.setList(productListVOs);
+		return ServerResponse.createBySuccess(pageResult);
+	}
+	
+	private ProductListVO assembleProductListVO(Product product) {
+		ProductListVO productListVO = new ProductListVO();
+		productListVO.setId(product.getId());
+		productListVO.setCategoryId(product.getCategoryId());
+		productListVO.setMainImage(product.getMainImage());
+		productListVO.setSubtitle(product.getSubtitle());
+		productListVO.setPrice(product.getPrice());
+		productListVO.setStatus(product.getStatus());
+		productListVO.setName(product.getName());
+		productListVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.jiebbs.com/"));
+		return productListVO;
+	}
+	
+	public ServerResponse<PageInfo> productSearch(Integer productId,String productName,Integer pageNum,Integer pageSize){
+		PageHelper.startPage(pageNum,pageSize);
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(productName)) {
+			productName = new StringBuilder().append("%").append(productName).append("%").toString();
+		}
+		List<Product> productList = productMapper.selectByProductIdAndProductName(productName, productId);
+		List<ProductListVO> productListVOs = Lists.newArrayList();
+		for(Product temp:productList) {
+			productListVOs.add(assembleProductListVO(temp));
+		}
+		PageInfo pageResult = new PageInfo(productList);
+		pageResult.setList(productListVOs);
+		return ServerResponse.createBySuccess(pageResult);
+	}
+	
+	
 }
