@@ -1,7 +1,5 @@
 package com.jiebbs.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
@@ -20,7 +18,7 @@ public class PropertiesUtil {
 	   String fileName = "jiebbs.properties";
 	   props = new Properties();
 	   try {
-		props.load(new InputStreamReader(PropertiesUtil.class.getResourceAsStream(fileName), "UTF-8"));
+		props.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName),"utf-8"));
 	} catch (IOException e) {
 		logger.error("配置信息读取异常",e);
 	}

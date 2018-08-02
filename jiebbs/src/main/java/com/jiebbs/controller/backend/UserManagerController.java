@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jiebbs.common.Const;
@@ -22,7 +23,7 @@ public class UserManagerController {
 	
 	@RequestMapping(value="login.do",method=RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse<User> login(String username,String password,HttpSession session){
+	public ServerResponse<User> login(@RequestParam("username")String username,@RequestParam("password")String password,HttpSession session){
 		ServerResponse<User> response = iUserService.login(username, password);
 		if(response.isSuccess()) {
 			User user = response.getData();
