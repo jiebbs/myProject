@@ -1,22 +1,22 @@
 package com.jiebbs.service.Impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.jiebbs.common.Const;
 import com.jiebbs.common.ResponseCode;
 import com.jiebbs.common.ServerResponse;
 import com.jiebbs.daos.ClassificationMapper;
 import com.jiebbs.daos.ProductMapper;
 import com.jiebbs.pojos.Classification;
 import com.jiebbs.pojos.Product;
+import com.jiebbs.service.ICategoryService;
 import com.jiebbs.service.IProductService;
 import com.jiebbs.utils.DateTimeUtils;
 import com.jiebbs.utils.PropertiesUtil;
@@ -30,6 +30,9 @@ public class ProductServiceImpl implements IProductService {
 	private ProductMapper productMapper;
 	@Autowired
 	private ClassificationMapper classificationMapper;
+	@Autowired
+	private ICategoryService iCategoryService;
+	
 	
 	public ServerResponse saveOrUpdateProduct(Product product) {
 		if(null != product) {
@@ -141,7 +144,7 @@ public class ProductServiceImpl implements IProductService {
 		productListVO.setPrice(product.getPrice());
 		productListVO.setStatus(product.getStatus());
 		productListVO.setName(product.getName());
-		productListVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.jiebbs.com/"));
+		productListVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://localhost:21/image/"));
 		return productListVO;
 	}
 	
@@ -160,5 +163,63 @@ public class ProductServiceImpl implements IProductService {
 		return ServerResponse.createBySuccess(pageResult);
 	}
 	
+	public ServerResponse<ProductDetailVO> userProductDetails(Integer productId){
+		if(null==productId) {
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+		}
+		Product product = productMapper.selectByPrimaryKey(productId);
+		if(null==product) {
+			return ServerResponse.createByErrorMessage("该产品不存在");
+		}
+		if(Const.ProductStatus.ON_SALE.getCode()!=product.getStatus()){
+			return ServerResponse.createByErrorMessage("该产品已下架或者删除");
+		}
+		ProductDetailVO productDetailVO =  assembleProductDetailVO(product);
+		
+		return ServerResponse.createBySuccess(productDetailVO);
+	}
 	
+	public ServerResponse<PageInfo> getProductByKeyWordAndCategory(String keyWord,Integer categoryId,Integer pageNum,Integer pageSize,String orderBy){
+		if(org.apache.commons.lang3.StringUtils.isBlank(keyWord)&&null==categoryId) {
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+		}
+		List<Integer> categoryIdList = Lists.newArrayList();
+		if(categoryId != null) {
+			Classification classification = classificationMapper.selectByPrimaryKey(categoryId);
+			if(null==classification&&org.apache.commons.lang3.StringUtils.isBlank(keyWord)) {
+				PageHelper.startPage(pageNum,pageSize);
+				//当分类ID不存在并且，关键字也为空的时候，不报错误，只返回一个空的结果集
+				List<ProductListVO> productList = Lists.newArrayList();
+				PageInfo pageResult = new PageInfo(productList);
+				return ServerResponse.createBySuccess(pageResult);
+			}
+			
+			//categoryId可能是一个大的父类，则此时需要递归查询父类下的所有子类
+			categoryIdList = iCategoryService.selectCategoryAndChildrenById(classification.getId()).getData();
+		}
+		
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(keyWord)) {
+			keyWord = new StringBuilder().append("%").append(keyWord).append("%").toString();
+		}
+		
+		PageHelper.startPage(pageNum,pageSize);
+		
+		List<Product> productList = productMapper.selectByNameAndCategoryIds(org.apache.commons.lang3.StringUtils.isBlank(keyWord)?null:keyWord,
+																				categoryIdList.size()==0?null:categoryIdList);
+		
+		List<ProductListVO> productListVOList = Lists.newArrayList();
+		for(Product temp:productList) {
+			productListVOList.add(assembleProductListVO(temp));
+		}
+		PageInfo pageResult = new PageInfo(productListVOList);
+		//排序处理
+				if(org.apache.commons.lang3.StringUtils.isNotBlank(orderBy)) {
+					if(Const.ProductListOrderBy.PRICE_DESC_ASC.contains(orderBy)) {
+						String[] orderByArray = orderBy.split("_");
+						//PageHelper中升降序格式为：字段+空格+升降序 （例如：price+" "+desc）
+						PageHelper.orderBy(orderByArray[0]+" "+orderByArray[1]);
+					}
+				}
+		return ServerResponse.createBySuccess(pageResult);
+	}
 }

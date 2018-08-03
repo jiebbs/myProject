@@ -2,6 +2,13 @@ package com.jiebbs.vo;
 
 import java.math.BigDecimal;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+
+@JsonInclude(Include.NON_NULL)
 public class ProductDetailVO {
 	
 	private Integer id;

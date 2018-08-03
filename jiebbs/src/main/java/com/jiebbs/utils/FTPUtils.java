@@ -75,7 +75,7 @@ public class FTPUtils {
 		ftpClient = new FTPClient();
 		boolean isSuccess = false;
 		try {
-			ftpClient.connect(ip+":"+port);
+			ftpClient.connect(ip);
 			isSuccess = ftpClient.login(user, password);
 		} catch (SocketException e) {
 			logger.error("FTP服务器链接异常",e);
