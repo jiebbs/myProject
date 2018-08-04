@@ -202,24 +202,27 @@ public class ProductServiceImpl implements IProductService {
 			keyWord = new StringBuilder().append("%").append(keyWord).append("%").toString();
 		}
 		
-		PageHelper.startPage(pageNum,pageSize);
 		
+		PageHelper.startPage(pageNum,pageSize);
+		//排序处理
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(orderBy)) {
+			if(Const.ProductListOrderBy.PRICE_DESC_ASC.contains(orderBy)) {
+				String[] orderByArray = orderBy.split("_");
+				//PageHelper中升降序格式为：字段+空格+升降序 （例如：price+" "+desc）
+				PageHelper.orderBy(orderByArray[0]+" "+orderByArray[1]);
+			}
+		}
 		List<Product> productList = productMapper.selectByNameAndCategoryIds(org.apache.commons.lang3.StringUtils.isBlank(keyWord)?null:keyWord,
 																				categoryIdList.size()==0?null:categoryIdList);
 		
 		List<ProductListVO> productListVOList = Lists.newArrayList();
+		
 		for(Product temp:productList) {
 			productListVOList.add(assembleProductListVO(temp));
 		}
-		PageInfo pageResult = new PageInfo(productListVOList);
-		//排序处理
-				if(org.apache.commons.lang3.StringUtils.isNotBlank(orderBy)) {
-					if(Const.ProductListOrderBy.PRICE_DESC_ASC.contains(orderBy)) {
-						String[] orderByArray = orderBy.split("_");
-						//PageHelper中升降序格式为：字段+空格+升降序 （例如：price+" "+desc）
-						PageHelper.orderBy(orderByArray[0]+" "+orderByArray[1]);
-					}
-				}
+		PageInfo pageResult = new PageInfo(productList);
+		pageResult.setList(productListVOList);
+		
 		return ServerResponse.createBySuccess(pageResult);
 	}
 }

@@ -1,5 +1,9 @@
 package com.jiebbs.daos;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.pojos.Shopping_cart;
 
 public interface Shopping_cartMapper {
@@ -39,4 +43,26 @@ public interface Shopping_cartMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(Shopping_cart record);
+	
+	/**
+	 * 根据用户id和产品id查询用户购物车
+	 * @param userId
+	 * @param productId
+	 * @return
+	 */
+	Shopping_cart selectByUserIdAndProductId(@Param(value="userId")Integer userId,@Param(value="productId")Integer productId);
+	
+	/**
+	 * 通过userId 来查询购物车信息
+	 * @param userId
+	 * @return
+	 */
+	List<Shopping_cart> selectCartByUserId(Integer userId);
+	
+	/**
+	 * 通过userId查找商品是否别勾选
+	 * @param userId
+	 * @return
+	 */
+	int selectProductCheckedStatusByUserId(Integer userId);
 }

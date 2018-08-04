@@ -12,6 +12,16 @@ public class Const {
 		//使用Set集合是contains方法的时间复杂度为O(1),而List的时间复杂度为O(N)
 		Set<String> PRICE_DESC_ASC = Sets.newHashSet("price_desc","price_asc");
 	}
+	
+	//设置购物车商品勾选状态常量
+	public interface CartCheckStatus{
+		int CHECKED = 1;//表示购物车商品已选中状态
+		int UNCHECKED = 0;//购物车商品未选中
+		
+		String LIMIT_NUM_FAIL ="LIMIT_NUM_FAIL";
+		String LIMIT_NUM_SUCCESS ="LIMIT_NUM_SUCCESS";
+	}
+	
 	//前端进行异步校验使用
 	public static final String USERNAME = "username";
 	
