@@ -65,4 +65,26 @@ public interface Shopping_cartMapper {
 	 * @return
 	 */
 	int selectProductCheckedStatusByUserId(Integer userId);
+	
+	/**
+	 * 根据userId和传入的商品Id删除商品
+	 * @param userId
+	 * @param productIds
+	 * @return
+	 */
+	int delectByUserIdAndProductIds(@Param("userId")Integer userId,@Param("productIds")List<String> productIds);
+	
+	/**
+	 * 根据传入的userId,返回全选或者全反选的商品列表
+	 * @param userId
+	 * @return
+	 */
+	int checkOrUncheckProduct(@Param("userId")Integer userId,@Param("productId")Integer productId,@Param("checked")Integer checked);
+	
+	/**
+	 * 根据传入的userId 查询用户购物车里的商品数量
+	 * @param userId
+	 * @return
+	 */
+	int selectCartProductCount(Integer userId);
 }

@@ -14,7 +14,7 @@ import com.jiebbs.vo.ProductDetailVO;
 
 @Controller
 @RequestMapping(value="/product/")
-public class productController {
+public class ProductController {
 	
 	@Autowired
 	private IProductService iProductService;

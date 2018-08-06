@@ -159,15 +159,15 @@
   	select
   	<include refid="Base_Column_List"/>
   	from shopping_cart_table
-  	where userId = #{userId}
-  	And productId = #{productId}
+  	where user_id = #{userId}
+  	And product_id = #{productId}
   </select>
   
   <select id="selectCartByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
   	select
   	<include refid="Base_Column_List"/>
   	from shopping_cart_table
-  	where userId=#{userId}
+  	where user_id=#{userId}
   </select>
   
   <select id="selectProductCheckedStatusByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
@@ -175,6 +175,36 @@
   	count(1)
   	from shopping_cart_table
   	where checked = 0
-  	and userId = #{userId}
+  	and user_id = #{userId}
+  </select>
+  
+  <delete id="delectByUserIdAndProductIds" parameterType="map">
+  	delete
+  	from 
+  	shopping_cart_table
+  	where user_Id=#{userId}
+  	<if test="productIds!=null">
+  		and product_id in
+  		<foreach item="item" index="index" open="(" separator="," close=")" collection="productIds">
+  			#{item}
+  		</foreach>
+  	</if>
+  </delete>
+   
+  <update id="checkOrUncheckProduct" parameterType="map">
+  	update shopping_cart_table
+  	set checked = #{checked},
+  	update_time = now()
+  	where user_id = #{userId}
+  	<if test="productId != null">
+  		and product_id = #{productId}
+  	</if>
+  </update>
+  
+  <select id="selectCartProductCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  	select 
+  	ifnull(sum(quantity),0) as count
+  	from shopping_cart_table 
+  	where user_id = #{userId}
   </select>
 </mapper>
