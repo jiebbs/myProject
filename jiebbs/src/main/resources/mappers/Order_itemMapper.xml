@@ -201,4 +201,25 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectByOrderNumAndUserId" resultMap="BaseResultMap" parameterType="map">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from Order_Item_table
+  	where user_id = #{userId}
+  	and order_no = #{orderNum}
+  </select>
+  
+  <insert id="benchInsert" parameterType="list">
+  	 insert into order_item_table (id, user_id, order_no, 
+      product_id, product_name, product_image, 
+      current_unit_price, quatity, total_price, 
+      create_time, update_time)
+   <foreach collection="orderItemList" index="index" item="item" separator=",">
+   (
+   #{item.id},#{item.userId},#{item.orderNo},#{item.productId},#{item.productName},#{item.productImage},
+   #{item.currentUnitPrice},#{item.quatity},#{totalPrice},now(),now()
+   )
+   </foreach>   
+  </insert>
 </mapper>

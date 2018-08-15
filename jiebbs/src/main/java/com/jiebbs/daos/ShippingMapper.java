@@ -1,5 +1,9 @@
 package com.jiebbs.daos;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.pojos.Shipping;
 
 public interface ShippingMapper {
@@ -39,4 +43,34 @@ public interface ShippingMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(Shipping record);
+	
+	/**
+	 * 为了防止横向越权，使用带userId的方式删除送货地址
+	 * @param shippingId
+	 * @param userId
+	 * @return
+	 */
+	int deleteByUserIdAndShippingId(@Param("shippingId")Integer shippingId,@Param("userId")Integer userId);
+	
+	/**
+	 * 根据Shipping对象更新用户地址
+	 * @param shipping
+	 * @return
+	 */
+	int updateByShipping(Shipping shipping);
+	
+	/**
+	 * 根据传入的userId 查询收货地址详情
+	 * @param userId
+	 * @param shipping
+	 * @return
+	 */
+	Shipping selectByUserIdAndShippingId(@Param("userId")Integer userId,@Param("shippingId")Integer shippingId);
+	
+	/**
+	 * 通过userId 查询查询该用户所有的用户地址
+	 * @param userId
+	 * @return
+	 */
+	List<Shipping> selectAllShippingByUserId(Integer userId);
 }

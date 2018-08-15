@@ -45,7 +45,7 @@ public interface Shopping_cartMapper {
 	int updateByPrimaryKey(Shopping_cart record);
 	
 	/**
-	 * ¸ù¾İÓÃ»§idºÍ²úÆ·id²éÑ¯ÓÃ»§¹ºÎï³µ
+	 * ï³µ
 	 * @param userId
 	 * @param productId
 	 * @return
@@ -53,21 +53,21 @@ public interface Shopping_cartMapper {
 	Shopping_cart selectByUserIdAndProductId(@Param(value="userId")Integer userId,@Param(value="productId")Integer productId);
 	
 	/**
-	 * Í¨¹ıuserId À´²éÑ¯¹ºÎï³µĞÅÏ¢
+	 *
 	 * @param userId
 	 * @return
 	 */
 	List<Shopping_cart> selectCartByUserId(Integer userId);
 	
 	/**
-	 * Í¨¹ıuserId²éÕÒÉÌÆ·ÊÇ·ñ±ğ¹´Ñ¡
+	 *
 	 * @param userId
 	 * @return
 	 */
 	int selectProductCheckedStatusByUserId(Integer userId);
 	
 	/**
-	 * ¸ù¾İuserIdºÍ´«ÈëµÄÉÌÆ·IdÉ¾³ıÉÌÆ·
+	 * 
 	 * @param userId
 	 * @param productIds
 	 * @return
@@ -75,16 +75,24 @@ public interface Shopping_cartMapper {
 	int delectByUserIdAndProductIds(@Param("userId")Integer userId,@Param("productIds")List<String> productIds);
 	
 	/**
-	 * ¸ù¾İ´«ÈëµÄuserId,·µ»ØÈ«Ñ¡»òÕßÈ«·´Ñ¡µÄÉÌÆ·ÁĞ±í
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	int checkOrUncheckProduct(@Param("userId")Integer userId,@Param("productId")Integer productId,@Param("checked")Integer checked);
 	
 	/**
-	 * ¸ù¾İ´«ÈëµÄuserId ²éÑ¯ÓÃ»§¹ºÎï³µÀïµÄÉÌÆ·ÊıÁ¿
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	int selectCartProductCount(Integer userId);
+	
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	 
+	List<Shopping_cart> selectCheckedCartByUserId(Integer userId); 
 }

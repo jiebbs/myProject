@@ -207,4 +207,12 @@
   	from shopping_cart_table 
   	where user_id = #{userId}
   </select>
+  
+  <select id="selectProductCheckedStatusByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from shopping_cart_table
+  	where user_id=#{userId}
+  	and checked=1
+  </select>
 </mapper>

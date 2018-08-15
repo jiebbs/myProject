@@ -1,5 +1,9 @@
 package com.jiebbs.daos;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.jiebbs.pojos.Order_item;
 
 public interface Order_itemMapper {
@@ -39,4 +43,18 @@ public interface Order_itemMapper {
 	 * @mbg.generated  Sat Jul 21 15:36:47 CST 2018
 	 */
 	int updateByPrimaryKey(Order_item record);
+	
+	/**
+	 * 根据传入的userId和orderId查询订单中的商品
+	 * @param userId
+	 * @param orderId
+	 * @return
+	 */
+	List<Order_item> selectByOrderNumAndUserId(@Param("userId")Integer userId,@Param("orderNum")Long orderNum);
+	
+	/**
+	 * 批量插入orderItem
+	 * @param orderItemList
+	 */
+	void benchInsert(List<Order_item> orderItemList);
 }

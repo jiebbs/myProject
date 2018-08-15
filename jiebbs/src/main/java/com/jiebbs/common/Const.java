@@ -9,32 +9,31 @@ public class Const {
 	public static final String CURRENT_USER = "currentUser";
 	
 	public interface ProductListOrderBy{
-		//Ê¹ÓÃSet¼¯ºÏÊÇcontains·½·¨µÄÊ±¼ä¸´ÔÓ¶ÈÎªO(1),¶øListµÄÊ±¼ä¸´ÔÓ¶ÈÎªO(N)
+
 		Set<String> PRICE_DESC_ASC = Sets.newHashSet("price_desc","price_asc");
 	}
 	
-	//ÉèÖÃ¹ºÎï³µÉÌÆ·¹´Ñ¡×´Ì¬³£Á¿
+
 	public interface CartCheckStatus{
-		int CHECKED = 1;//±íÊ¾¹ºÎï³µÉÌÆ·ÒÑÑ¡ÖĞ×´Ì¬
-		int UNCHECKED = 0;//¹ºÎï³µÉÌÆ·Î´Ñ¡ÖĞ
+		int CHECKED = 1;
+		int UNCHECKED = 0;
 		
 		String LIMIT_NUM_FAIL ="LIMIT_NUM_FAIL";
 		String LIMIT_NUM_SUCCESS ="LIMIT_NUM_SUCCESS";
 	}
 	
-	//Ç°¶Ë½øĞĞÒì²½Ğ£ÑéÊ¹ÓÃ
+
 	public static final String USERNAME = "username";
 	
 	public static final String EMAIL = "email";
-	
-	//Ê¹ÓÃÄÚ²¿Àà¹æ¶¨ÓÃ»§ÀàĞÍ
+
 	public interface Role{
-		int ROLE_CUSTORMER = 0;//ÆÕÍ¨ÓÃ»§
-		int ROLE_ADMIN = 1;//¹ÜÀíÔ±
+		int ROLE_CUSTORMER = 0;
+		int ROLE_ADMIN = 1;
 	}
-	//¹æ¶¨²úÆ·×´Ì¬
+
 	public enum ProductStatus{
-		ON_SALE(1,"ÔÚÏß");
+		ON_SALE(1,"åœ¨çº¿");
 		private int code;
 		private String status;
 		
@@ -58,7 +57,93 @@ public class Const {
 		public void setStatus(String status) {
 			this.status = status;
 		}
+	}
+	
+	public enum TradeStatus{
+		CANCALED(0,"å·²å–æ¶ˆ"),
+		NO_PAY(10,"æœªæ”¯ä»˜"),
+		PAID(20,"å·²æ”¯ä»˜"),
+		SHIPPING(40,"å·²å‘è´§"),
+		ORDER_SUCCESS(50,"è®¢å•å®Œæˆ"),
+		ORDER_CLOSE(60,"è®¢å•å…³é—­");
 		
+		private String value;
+		private int code;
+		private TradeStatus( int code,String value) {
+			this.value = value;
+			this.code = code;
+		}
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
+		public int getCode() {
+			return code;
+		}
+		public void setCode(int code) {
+			this.code = code;
+		}
 		
 	}
+	
+	public interface AlipayCallBack{
+		String TRADE_STATUS_WAIT_BUYER_PAY="WAIT_BUYER_PAY";
+		String TRADE_STATUS_TRADE_SUCCESS="TRADE_SUCCESS";
+		
+		String RESPONSE_SUCCESS = "success";
+		String RESPONSE_FAILED = "failed";
+		
+	}
+	
+	public enum PayPlatform{
+		ALIPAY(1,"æ”¯ä»˜å®")
+		
+		;
+		private String value;
+		private int code;
+		private PayPlatform( int code,String value) {
+			this.value = value;
+			this.code = code;
+		}
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
+		public int getCode() {
+			return code;
+		}
+		public void setCode(int code) {
+			this.code = code;
+		}
+	}
+	
+	public enum PaymentType{
+		
+		PAY_ONLINE(1,"åœ¨çº¿æ”¯ä»˜");
+		
+		private int code;
+		private String value;
+		private PaymentType(int code, String value) {
+			this.code = code;
+			this.value = value;
+		}
+		public int getCode() {
+			return code;
+		}
+		public void setCode(int code) {
+			this.code = code;
+		}
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
+		
+	}
+	
 }
