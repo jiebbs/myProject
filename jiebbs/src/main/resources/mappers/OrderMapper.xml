@@ -252,4 +252,19 @@
   	where order_no= #{orderNum}
   </select>
   
+  <select id="selectOrderByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from order_table
+  	where user_id = #{userId}
+  	order by create_time desc
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from order_table
+  	order by create_time desc
+  </select>
+  
 </mapper>

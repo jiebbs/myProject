@@ -57,4 +57,11 @@ public interface Order_itemMapper {
 	 * @param orderItemList
 	 */
 	void benchInsert(List<Order_item> orderItemList);
+	
+	/**
+	 *管理员根据订单号查询用户订单详情 
+	 * @param orderNum
+	 * @return
+	 */
+	List<Order_item> selectAllByOrderNum(Long orderNum);
 }

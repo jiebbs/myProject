@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alipay.api.AlipayApiException;
@@ -21,7 +22,6 @@ import com.google.common.collect.Maps;
 import com.jiebbs.common.Const;
 import com.jiebbs.common.ResponseCode;
 import com.jiebbs.common.ServerResponse;
-import com.jiebbs.pojos.Order;
 import com.jiebbs.pojos.User;
 import com.jiebbs.service.IOrderService;
 
@@ -34,13 +34,55 @@ public class OrderController {
 	private IOrderService iOrderService;
 	
 	@RequestMapping(value="create.do",method=RequestMethod.GET)
+	@ResponseBody
 	public ServerResponse createOrder(HttpSession session,Integer shippingId) {
 		User user =(User)session.getAttribute(Const.CURRENT_USER);
 		if(null == user) {
 			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(), ResponseCode.NEED_LOGGING.getDesc());
 		}
-		
+		return iOrderService.createOrder(user.getId(), shippingId);
 	}
+	
+	@RequestMapping(value="cancal.do",method=RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse cancalOrder(HttpSession session,Long orderNum) {
+		User user =(User)session.getAttribute(Const.CURRENT_USER);
+		if(null == user) {
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(), ResponseCode.NEED_LOGGING.getDesc());
+		}
+		return iOrderService.cancalOrder(user.getId(), orderNum);
+	}
+	
+	@RequestMapping(value="get_order_cart_product.do",method=RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse getOrderCartProduct(HttpSession session) {
+		User user =(User)session.getAttribute(Const.CURRENT_USER);
+		if(null == user) {
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(), ResponseCode.NEED_LOGGING.getDesc());
+		}
+		return iOrderService.getOrderCartProduct(user.getId());
+	}
+	
+	@RequestMapping(value="detail.do",method=RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse getOrderDetail(HttpSession session,Long orderNum) {
+		User user =(User)session.getAttribute(Const.CURRENT_USER);
+		if(null == user) {
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(), ResponseCode.NEED_LOGGING.getDesc());
+		}
+		return iOrderService.getOrderDetail(user.getId(), orderNum);
+	}
+	
+	@RequestMapping(value="list.do",method=RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse orderList(HttpSession session,@RequestParam(value="pageNum",defaultValue="1")Integer pageNum,@RequestParam(value="pageSize",defaultValue="10")Integer pageSize) {
+		User user =(User)session.getAttribute(Const.CURRENT_USER);
+		if(null == user) {
+			return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGGING.getCode(), ResponseCode.NEED_LOGGING.getDesc());
+		}
+		return iOrderService.getOrderlist(user.getId(), pageNum, pageSize);
+	}
+	
 	
 	
 	

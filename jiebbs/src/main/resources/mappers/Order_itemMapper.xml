@@ -205,7 +205,7 @@
   <select id="selectByOrderNumAndUserId" resultMap="BaseResultMap" parameterType="map">
   	select 
   	<include refid="Base_Column_List"/>
-  	from Order_Item_table
+  	from Order_item_table
   	where user_id = #{userId}
   	and order_no = #{orderNum}
   </select>
@@ -222,4 +222,11 @@
    )
    </foreach>   
   </insert>
+  
+  <select id="selectAllByOrderNum" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from order_item_table;
+  	where order_no = #{orderNum}
+  </select>
 </mapper>

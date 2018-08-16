@@ -68,4 +68,19 @@ public interface OrderMapper {
 	 */
 	Order selectByOrderNum(Long orderNum);
 	
+	/**
+	 * 根据用户Id查询订单
+	 * @param userId
+	 * @return
+	 */
+	
+	List<Order> selectOrderByUserId(Integer userId);
+	
+	/**
+	 * 管理员查询所有的订单
+	 * @return
+	 */
+	List<Order> selectAll();
+	
+	
 }

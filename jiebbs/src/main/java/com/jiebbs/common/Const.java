@@ -86,6 +86,15 @@ public class Const {
 			this.code = code;
 		}
 		
+		public static TradeStatus getTypeByCode(int code) {
+			for(TradeStatus status:values()) {
+				if(status.getCode()==code) {
+					return status; 
+				}
+			}
+			throw new RuntimeException("没有找到对应的枚举");
+		}
+		
 	}
 	
 	public interface AlipayCallBack{
@@ -144,6 +153,14 @@ public class Const {
 			this.value = value;
 		}
 		
+		public static PaymentType getTypeByCode(int code) {
+			for(PaymentType type:values()) {
+				if(type.getCode()==code) {
+					return type; 
+				}
+			}
+			throw new RuntimeException("没有找到对应的枚举");
+		}
 	}
 	
 }
